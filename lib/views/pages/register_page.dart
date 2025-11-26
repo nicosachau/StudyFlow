@@ -2,19 +2,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:studyflow/views/widget_tree.dart';
 import 'package:studyflow/views/widgets/hero_widget.dart';
-import 'package:studyflow/views/pages/register_page.dart';
 
-
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key, required this.title});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key, required this.title});
 
   final String title;
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   // FirebaseAuth Instanz erstellen
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -22,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPasswort = TextEditingController();
 
-  // Zustand für die Ladeanzeige
+  // Zustand für die Ladeanzeige und Fehlermeldungen
   bool _isLoading = false;
   String? _errorMessage;
 
@@ -33,8 +31,8 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  // Asynchrone Methode für den Login-Vorgang
-  Future<void> _onLoginPressed() async {
+  // Asynchrone Methode für den Registrierungs-Vorgang
+  Future<void> _onRegisterPressed() async {
     if (_controllerEmail.text.isEmpty || _controllerPasswort.text.isEmpty) {
       setState(() {
         _errorMessage = "Bitte fülle beide Felder aus.";
@@ -48,30 +46,33 @@ class _LoginPageState extends State<LoginPage> {
     });
 
     try {
-      // Firebase-Authentifizierung durchführen
-      await _auth.signInWithEmailAndPassword(
+      // Neuen Benutzer mit Firebase-Authentifizierung erstellen
+      await _auth.createUserWithEmailAndPassword(
         email: _controllerEmail.text.trim(),
         password: _controllerPasswort.text.trim(),
       );
 
-      // Bei Erfolg zur WidgetTree navigieren
-      if (mounted) { // mounted prüft, ob das Widget noch im Widget-Baum ist
-        Navigator.pushReplacement(
+      // Bei Erfolg direkt zur App weiterleiten (WidgetTree prüft den Auth-Status)
+      if (mounted) {
+        Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => const WidgetTree()),
+              (route) => false, // Entfernt alle vorherigen Routen
         );
       }
     } on FirebaseAuthException catch (e) {
       // Fehlerbehandlung
       setState(() {
-        if (e.code == 'user-not-found' || e.code == 'wrong-password' ||
-            e.code == 'invalid-credential') {
-          _errorMessage = 'Ungültige E-Mail-Adresse oder falsches Passwort.';
+        if (e.code == 'weak-password') {
+          _errorMessage = 'Das Passwort ist zu schwach.';
+        } else if (e.code == 'email-already-in-use') {
+          _errorMessage = 'Diese E-Mail-Adresse wird bereits verwendet.';
         } else if (e.code == 'invalid-email') {
           _errorMessage = 'Das Format der E-Mail-Adresse ist ungültig.';
         } else {
           _errorMessage = 'Ein unbekannter Fehler ist aufgetreten.';
         }
+
       });
     } finally {
       // Ladezustand beenden, egal ob erfolgreich oder nicht
@@ -86,7 +87,9 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
@@ -94,8 +97,9 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                HeroWidget(title: widget.title),
+                HeroWidget(title: "Account erstellen"),
                 const SizedBox(height: 20.0),
+
                 // Fehlermeldung anzeigen, falls vorhanden
                 if (_errorMessage != null)
                   Padding(
@@ -106,6 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                       textAlign: TextAlign.center,
                     ),
                   ),
+
                 TextField(
                   controller: _controllerEmail,
                   decoration: InputDecoration(
@@ -128,32 +133,17 @@ class _LoginPageState extends State<LoginPage> {
                   obscureText: true, // Passwort verbergen
                 ),
                 const SizedBox(height: 20),
+
                 // Ladeanzeige oder Button anzeigen
                 _isLoading
                     ? const CircularProgressIndicator()
                     : ElevatedButton(
-                  onPressed: _onLoginPressed,
+                  onPressed: _onRegisterPressed,
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 40.0),
                   ),
-                  child: Text(widget.title),
+                  child: const Text("Registrieren"),
                 ),
-                const SizedBox(height: 20.0),
-
-                TextButton(
-                  onPressed: () {
-                    // Navigieren zur RegisterPage
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                        const RegisterPage(title: "Registrieren"),
-                      ),
-                    );
-                  },
-                  child: const Text("Noch keinen Account? Jetzt registrieren"),
-                ),
-                const SizedBox(height: 40.0),
               ],
             ),
           ),

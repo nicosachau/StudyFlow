@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mob_app/views/widgets/hero_widget.dart';
+import 'package:studyflow/views/widgets/hero_widget.dart';
 
 class MenuPage extends StatelessWidget {
   const MenuPage({super.key});

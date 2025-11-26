@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:mob_app/data/notifieres.dart';
-import 'package:mob_app/views/pages/welcome_page.dart';
+import 'package:studyflow/data/notifieres.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:studyflow/views/widget_tree.dart';
+import 'firebase_options.dart';
 
-void main() {
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const StudyFlow());
 }
 
@@ -27,7 +34,7 @@ class _MyAppState extends State<StudyFlow> {
               brightness: isDarkMode ? Brightness.dark : Brightness.light,
             ),
           ),
-          home: WelcomePage(), //legt den Screen beim öffnen fest
+          home: const WidgetTree(), //legt den Screen beim Öffnen fest
         );
       },
     );

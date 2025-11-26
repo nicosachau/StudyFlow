@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mob_app/data/constants.dart';
+import 'package:studyflow/data/constants.dart';
 
 class ModulePage extends StatelessWidget {
   const ModulePage({super.key});

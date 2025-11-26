@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mob_app/views/pages/login_page.dart';
-import 'package:mob_app/views/widgets/hero_widget.dart';
+import 'package:studyflow/views/pages/login_page.dart';
+import 'package:studyflow/views/widgets/hero_widget.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});

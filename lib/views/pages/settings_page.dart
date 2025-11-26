@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mob_app/data/notifieres.dart';
-import 'package:mob_app/views/pages/welcome_page.dart';
+import 'package:studyflow/data/notifieres.dart';
+import 'package:studyflow/views/pages/welcome_page.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mob_app/data/notifieres.dart';
+import 'package:studyflow/data/notifieres.dart';
 
 class NavbarWidget extends StatelessWidget {
   const NavbarWidget({super.key});
