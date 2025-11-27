@@ -1,6 +1,6 @@
 # mob_app
 
-A new Flutter project.
+Ein Flutter-Projekt für eine App zum Organisieren von Studieninhalten und zum Verbessern des Zeitmanagements.
 
 ## Getting Started
 
