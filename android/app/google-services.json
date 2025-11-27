@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "832452314037",
+    "project_id": "mob-studiflow",
+    "storage_bucket": "mob-studiflow.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:832452314037:android:a7a16e98338e9d64838ffc",
+        "android_client_info": {
+          "package_name": "com.example.mob_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADbuW0FZkYjrkK-HIxMMkvZtm4A6bitTY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
